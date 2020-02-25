@@ -152,77 +152,7 @@ op_01_TEXT	segment	byte public 'CODE' use16
 		; org 0Ch
 		assume es:nothing, ss:nothing, ds:_DATA, fs:nothing, gs:nothing
 
-	extern _start_game:proc
-
-; =============== S U B	R O U T	I N E =======================================
-
-; Attributes: bp-based frame
-public START_EXTRA
-start_extra	proc near
-		push	bp
-		mov	bp, sp
-		push	si
-		push	di
-		les	bx, _resident
-		mov	es:[bx+resident_t.demo_num], 0
-		mov	es:[bx+resident_t.stage], STAGE_EXTRA
-		mov	es:[bx+resident_t.credit_lives], 3
-		mov	es:[bx+resident_t.credit_bombs], 3
-		call	playchar_menu
-		or	ax, ax
-		jnz	short loc_A4CB
-		xor	si, si
-		jmp	short loc_A4A0
-; ---------------------------------------------------------------------------
-
-loc_A46F:
-		les	bx, _resident
-		add	bx, si
-		mov	es:[bx+resident_t.score_last], 0
-		mov	bx, word ptr _resident
-		add	bx, si
-		mov	es:[bx+resident_t.score_highest], 0
-		xor	di, di
-		jmp	short loc_A49A
-; ---------------------------------------------------------------------------
-
-loc_A489:
-		mov	ax, di
-		shl	ax, 3
-		les	bx, _resident
-		add	bx, ax
-		mov	es:[bx+si+resident_t.stage_score], 0
-		inc	di
-
-loc_A49A:
-		cmp	di, 6
-		jl	short loc_A489
-		inc	si
-
-loc_A4A0:
-		cmp	si, 8
-		jl	short loc_A46F
-		call	main_cdg_free
-		call	cfg_save
-		kajacall	KAJA_SONG_FADE, 10
-		call	game_exit
-		pushd	0
-		push	ds
-		push	offset _aMain	; "main"
-		push	ds
-		push	offset _aMain	; "main"
-		call	_execl
-		add	sp, 0Ch
-
-loc_A4CB:
-		pop	di
-		pop	si
-		pop	bp
-		retn
-start_extra	endp
-
-
-; =============== S U B	R O U T	I N E =======================================
+include th05/start.asm
 
 ; Attributes: bp-based frame
 public START_DEMO
@@ -831,7 +761,7 @@ loc_AA6C:
 		jmp	cs:off_ABC3[bx]
 
 loc_AA91:
-		call	_start_game
+		call	start_game
 		graph_accesspage 1
 		call	pi_slot_load pascal, 0, ds, offset aOp1_pi
 		call	pi_slot_palette_apply pascal, 0
