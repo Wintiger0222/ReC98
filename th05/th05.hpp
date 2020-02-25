@@ -3,9 +3,15 @@
  * Include file for TH05
  */
 
+#include <master.h>
+#include <process.h>
 #include "ReC98.h"
+#include "libs/kaja/kaja.h"
+#include "th02/snd/snd.h"
 #include "th04/shared.hpp"
 #include "th05/resident.hpp"
+
+extern resident_t *resident;
 
 /// Formats
 /// -------

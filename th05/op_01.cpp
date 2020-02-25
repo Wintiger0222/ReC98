@@ -9,6 +9,14 @@ extern "C" {
 #include "th01/ranks.h"
 #include "th04/formats/scoredat.h"
 #include "th05/player/chars.h"
+#include "th05/th05.hpp"
+
+extern int pascal playchar_menu(void);
+extern void pascal main_cdg_free(void);
+extern void pascal cfg_save(void);
+extern void pascal game_exit();
+
+#include "th05/start.cpp"
 
 scoredat_section_t hi;
 scoredat_section_t hi2;

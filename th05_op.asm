@@ -152,90 +152,7 @@ op_01_TEXT	segment	byte public 'CODE' use16
 		; org 0Ch
 		assume es:nothing, ss:nothing, ds:_DATA, fs:nothing, gs:nothing
 
-; =============== S U B	R O U T	I N E =======================================
-
-; Attributes: bp-based frame
-public START_GAME
-start_game	proc near
-		push	bp
-		mov	bp, sp
-		push	si
-		push	di
-		les	bx, _resident
-		mov	es:[bx+resident_t.end_sequence], ES_SCORE
-		mov	es:[bx+resident_t.demo_num], 0
-		mov	es:[bx+resident_t.stage], 0
-		mov	al, es:[bx+resident_t.cfg_lives]
-		mov	es:[bx+resident_t.credit_lives], al
-		mov	al, es:[bx+resident_t.cfg_bombs]
-		mov	es:[bx+resident_t.credit_bombs], al
-		call	playchar_menu
-		or	ax, ax
-		jnz	short loc_A443
-		xor	si, si
-		jmp	short loc_A400
-; ---------------------------------------------------------------------------
-
-loc_A3CF:
-		les	bx, _resident
-		add	bx, si
-		mov	es:[bx+resident_t.score_last], 0
-		mov	bx, word ptr _resident
-		add	bx, si
-		mov	es:[bx+resident_t.score_highest], 0
-		xor	di, di
-		jmp	short loc_A3FA
-; ---------------------------------------------------------------------------
-
-loc_A3E9:
-		mov	ax, di
-		shl	ax, 3
-		les	bx, _resident
-		add	bx, ax
-		mov	es:[bx+si+resident_t.stage_score], 0
-		inc	di
-
-loc_A3FA:
-		cmp	di, 6
-		jl	short loc_A3E9
-		inc	si
-
-loc_A400:
-		cmp	si, 8
-		jl	short loc_A3CF
-		call	main_cdg_free
-		call	cfg_save
-		kajacall	KAJA_SONG_FADE, 10
-		call	game_exit
-		les	bx, _resident
-		cmp	es:[bx+resident_t.debug_mode], 0
-		jnz	short loc_A430
-		pushd	0
-		push	ds
-		push	offset aMain	; "main"
-		push	ds
-		push	offset aMain	; "main"
-		jmp	short loc_A43B
-; ---------------------------------------------------------------------------
-
-loc_A430:
-		pushd	0
-		push	ds
-		push	offset path	; "deb"
-		push	ds
-		push	offset path	; "deb"
-
-loc_A43B:
-		call	_execl
-		add	sp, 0Ch
-
-loc_A443:
-		pop	di
-		pop	si
-		pop	bp
-		retn
-start_game	endp
-
+	extern _start_game:proc
 
 ; =============== S U B	R O U T	I N E =======================================
 
@@ -291,9 +208,9 @@ loc_A4A0:
 		call	game_exit
 		pushd	0
 		push	ds
-		push	offset aMain	; "main"
+		push	offset _aMain	; "main"
 		push	ds
-		push	offset aMain	; "main"
+		push	offset _aMain	; "main"
 		call	_execl
 		add	sp, 0Ch
 
@@ -414,9 +331,9 @@ loc_A5BF:
 		call	game_exit
 		pushd	0
 		push	ds
-		push	offset aMain	; "main"
+		push	offset _aMain	; "main"
 		push	ds
-		push	offset aMain	; "main"
+		push	offset _aMain	; "main"
 		call	_execl
 		add	sp, 0Ch
 
@@ -914,7 +831,7 @@ loc_AA6C:
 		jmp	cs:off_ABC3[bx]
 
 loc_AA91:
-		call	start_game
+		call	_start_game
 		graph_accesspage 1
 		call	pi_slot_load pascal, 0, ds, offset aOp1_pi
 		call	pi_slot_palette_apply pascal, 0
@@ -3564,10 +3481,10 @@ _MENU_DESC		dd aMENU_START		; "ゲームを開始します"
 		dd aMENU_START_LUNATIC		; "ゲームを開始します（ルナティック）"
 _main_menu_initialized	db 0
 _option_initialized	db 0
-; char aMain[]
-aMain		db 'main',0
-; char path[]
-path		db 'deb',0
+
+_aMain		db 'main',0
+_aDeb		db 'deb',0
+
 aMENU_START	db 'ゲームを開始します',0
 aMENU_START_EXTRA db 'エキストラステージを開始します',0
 aMENU_HISCORE	db '現在のハイスコアを表示します',0
