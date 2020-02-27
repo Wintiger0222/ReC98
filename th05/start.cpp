@@ -1,6 +1,3 @@
-extern char *aDeb;
-extern char *aMain;
-
 #define ES_SCORE 0
 
 #define clear_score \
@@ -20,6 +17,8 @@ extern char *aMain;
 		game_exit(); \
 		execl(aMain, aMain, 0, 0); \
 
+#define aDeb  (char*)aDeb
+#define aMain (char*)aMain
 
 void start_game(void) {
 	resident->end_sequence = ES_SCORE;
@@ -49,4 +48,54 @@ void start_extra(void) {
 	if(!playchar_menu()) {
 		start_exec;
 	}
+}
+
+void start_demo(void) {
+	resident->end_sequence = ES_SCORE;
+	resident->stage = 0;
+	resident->credit_lives = 3;
+	resident->credit_bombs = 3;
+	resident->demo_num++;
+	if(resident->demo_num > 4) {
+		resident->demo_num = 1;
+	}
+	if(key_det.v & (INPUT_LEFT | INPUT_RIGHT)) {
+		if(extra_playable_with[PLAYCHAR_REIMU] || extra_playable_with[PLAYCHAR_MARISA] || extra_playable_with[PLAYCHAR_MIMA] || extra_playable_with[PLAYCHAR_YUUKA] ) {
+			resident->demo_num = 5;
+		} else {
+			resident->demo_num = 0;
+			return;
+		}
+	}
+	switch(resident->demo_num) {
+		case 1:
+			resident->playchar = PLAYCHAR_REIMU;
+			resident->demo_stage = 3;
+			break;
+		case 2:
+			resident->playchar = PLAYCHAR_MARISA;
+			resident->demo_stage = 1;
+			break;
+		case 3:
+			resident->playchar = PLAYCHAR_MIMA;
+			resident->demo_stage = 2;
+			break;
+		case 4:
+			resident->playchar = PLAYCHAR_YUUKA;
+			resident->demo_stage = 4;
+			break;
+		case 5:
+			resident->playchar = PLAYCHAR_MIMA;
+			resident->demo_stage = 6;
+			snd_kaja_func(KAJA_SONG_FADE, 8);
+			break;
+	}
+	for(int i = 0; i < 8; i++) {
+		resident->score_last.digits[i] = 0;
+		resident->score_highest.digits[i] = 0;
+	}
+	main_cdg_free();
+	cfg_save();
+	palette_black_out(1);
+	execl(aMain, aMain, 0, 0);
 }

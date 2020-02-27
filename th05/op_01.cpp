@@ -9,16 +9,18 @@ extern "C" {
 #include "th01/ranks.h"
 #include "th04/formats/scoredat.h"
 #include "th05/player/chars.h"
-/*
+
 #include "th05/th05.hpp"
-
+/*
 extern int pascal playchar_menu(void);
-extern void pascal main_cdg_free(void);
+void main_cdg_free(void);
 extern void pascal cfg_save(void);
-extern void pascal game_exit();
-
-#include "th05/start.cpp"
+extern void pascal game_exit(void);
+extern void pascal cdg_freeall(void);
 */
+//const char *aMain = "main";
+//const char *aDeb = "deb";
+
 
 scoredat_section_t hi;
 scoredat_section_t hi2;
@@ -35,4 +37,9 @@ static uint8_t unused_0[4];
 bool extra_playable_with[PLAYCHAR_COUNT];
 bool selectable_with[PLAYCHAR_COUNT];
 
+// #include "th05/start.cpp"
+/*
+void main_cdg_free(void) {
+	cdg_freeall();
+}*/
 }

@@ -9,9 +9,11 @@
 #include "libs/kaja/kaja.h"
 #include "th02/snd/snd.h"
 #include "th04/shared.hpp"
+#include "th04/hardware/inputvar.h"
 #include "th05/resident.hpp"
 
 extern resident_t *resident;
+extern twobyte_t key_det;
 
 /// Formats
 /// -------
