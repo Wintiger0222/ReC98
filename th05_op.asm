@@ -1193,7 +1193,7 @@ loc_B048:
 loc_B058:
 		cmp	_quit, 0
 		jz	short loc_B00E
-		call	_main_cdg_free
+		call	main_cdg_free
 		call	cfg_save_exit
 		call	text_clear
 		call	game_exit_to_dos
@@ -1439,35 +1439,7 @@ sub_B5A6	endp
 
 include th04/zunsoft.asm
 include th04/formats/cfg.asm
-
-; =============== S U B	R O U T	I N E =======================================
-
-; Attributes: bp-based frame
-
-main_cdg_load	proc near
-		push	bp
-		mov	bp, sp
-		call	cdg_load_all pascal, 0, ds, offset aSft1_cd2
-		call	cdg_load_all pascal, 10, ds, offset aSft2_cd2
-		call	cdg_load_all pascal, 35, ds, offset aCar_cd2
-		call	cdg_load_single_noalpha pascal, 40, ds, offset aSl00_cdg, 0
-		call	cdg_load_single_noalpha pascal, 41, ds, offset aSl01_cdg, 0
-		call	cdg_load_single_noalpha pascal, 42, ds, offset aSl02_cdg, 0
-		call	cdg_load_single_noalpha pascal, 43, ds, offset aSl03_cdg, 0
-		call	cdg_load_single pascal, 44, ds, offset aSlcl_cdg, 0
-		call	cdg_load_single_noalpha pascal, 45, ds, offset aSl04_cdg, 0
-		pop	bp
-		retn
-main_cdg_load	endp
-
-;	extern _main_cdg_free:proc
-_main_cdg_free	proc near
-		push bp
-		mov bp, sp
-		call cdg_freeall
-		pop bp
-		retn
-_main_cdg_free	endp
+include th04/main_cdg.asm
 
 
 ; =============== S U B	R O U T	I N E =======================================

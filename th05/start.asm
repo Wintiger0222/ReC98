@@ -48,7 +48,7 @@ start_game	proc near
 		or	ax, ax
 		jnz	short @@playchar_menu_quit
 		clear_score
-		call	_main_cdg_free
+		call	main_cdg_free
 		call	cfg_save
 		kajacall	KAJA_SONG_FADE, 10
 		call	game_exit
@@ -96,7 +96,7 @@ start_extra	proc near
 		or	ax, ax
 		jnz	short @@ret
 		clear_score
-		call	_main_cdg_free
+		call	main_cdg_free
 		call	cfg_save
 		kajacall	KAJA_SONG_FADE, 10
 		call	game_exit
@@ -214,7 +214,7 @@ demo_switch_mima_st6:
 @@score_clear_loop_iter:
 		cmp	si, 8
 		jl	short @@score_clear_loop_main
-		call	_main_cdg_free
+		call	main_cdg_free
 		call	cfg_save
 		push	1
 		call	palette_black_out
