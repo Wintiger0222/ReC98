@@ -1,5 +1,8 @@
 #include "th04/sprites/cels.h"
 
+#define PARTICLE_CELS 4
+#define B4BALL_CELS 4
+
 /// Stage-independent pattern numbers for the super_*() functions
 /// -------------------------------------------------------------
 /// Since super_entry_bfnt() doesn't take a "start patnum" parameter, the
@@ -56,6 +59,54 @@ typedef enum {
 	PAT_DECAY_BULLET16_last = (PAT_DECAY_BULLET16 + BULLET_DECAY_CELS - 1),
 
 	PAT_EXPLOSION_SMALL,
+
+	PAT_PARTICLE = 172,
+	PAT_PARTICLE_last = (PAT_PARTICLE + PARTICLE_CELS),
 	// ----------
 } main_patnum_t;
 /// -------------------------------------------------------------
+
+/// Stage 4
+/// -------
+typedef enum {
+	// st03.bb3
+	// --------
+	PAT_B4BALL_SNOW = 212,
+	PAT_B4BALL_SNOW_last = (PAT_B4BALL_SNOW + B4BALL_CELS - 1),
+	PAT_B4BALL_FIRE,
+	PAT_B4BALL_FIRE_last = (PAT_B4BALL_FIRE + B4BALL_CELS - 1),
+	PAT_B4BALL_SNOW_HIT,
+	PAT_B4BALL_SNOW_HIT_last = (PAT_B4BALL_SNOW_HIT + B4BALL_CELS - 1),
+	PAT_DECAY_B4BALL,
+	PAT_DECAY_B4BALL_last = (PAT_DECAY_B4BALL + BULLET_DECAY_CELS - 1),
+	// --------
+} stage4_patnum_t;
+/// -------
+
+/// Stage 5
+/// -------
+typedef enum {
+	// st04.bb2
+	// --------
+	PAT_KNIFE = 193,
+	PAT_KNIFE_last = (PAT_KNIFE + BULLET_V_CELS),
+	PAT_DECAY_KNIFE,
+	PAT_DECAY_KNIFE_last = (PAT_DECAY_KNIFE + BULLET_DECAY_CELS - 1)
+	/// -------
+} stage5_patnum_t;
+/// -------
+
+/// Stage 6
+/// -------
+typedef enum {
+	// st05.bb4
+	// --------
+	PAT_B6BALL_BLUE_1 = 200,
+	PAT_B6BALL_PURPLE,
+	PAT_B6BALL_BLUE_2,
+	PAT_B6BALL_BLUE_3,
+	PAT_DECAY_B6BALL,
+	PAT_DECAY_B6BALL_last = (PAT_DECAY_B6BALL + BULLET_DECAY_CELS - 1)
+	/// -------
+} stage6_patnum_t;
+/// -------
