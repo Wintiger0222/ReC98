@@ -55078,7 +55078,7 @@ include th01/formats/grp_buf[bss].asm
 include libs/master.lib/pal[bss].asm
 include libs/master.lib/fil[bss].asm
 include libs/master.lib/keystart[bss].asm
-		db 16 dup(?)
+include libs/master.lib/clip[bss].asm
 public _resident
 _resident	dd ?
 unk_391A0	db    ?	;
