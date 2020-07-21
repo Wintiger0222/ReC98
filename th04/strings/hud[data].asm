@@ -12,3 +12,6 @@ gsBOMB		db 0E0h, 0E1h, 0, 0, 0
 gsPLAYER	db 0E2h, 0E3h, 0, 0, 0
 gsPOWER		db 0E4h, 0E5h, 0, 0, 0
 gsENEMY		db 0EAh, 0EBh, 0ECh, 0,	0
+if GAME eq 5
+gsRUIKEI	db 0EDh, 0EEh, 0, 0, 0
+endif

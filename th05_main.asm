@@ -29159,7 +29159,6 @@ byte_226C2	db 0
 		db 0
 include th04/score[data].asm
 include th04/strings/hud[data].asm
-gsRUIKEI	db 0EDh, 0EEh, 0, 0, 0
 byte_22720	db 0
 word_22721	dw 4141h
 word_22723	dw 6161h
