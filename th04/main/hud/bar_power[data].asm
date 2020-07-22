@@ -1,5 +1,5 @@
-; Colors for the health, dream and power bars.
-HUD_BAR_COLORS	db TX_RED
+; Colors for the power bars.
+HUD_BAR_POWER_COLORS	db TX_RED
 	db TX_RED
 	db TX_RED
 	db TX_MAGENTA

@@ -7854,26 +7854,22 @@ hud_point_items_put	endp
 public HUD_DREAM_PUT
 hud_dream_put	proc far
 
-var_A		= word ptr -0Ah
-var_8		= word ptr -8
-var_6		= word ptr -6
-var_4		= word ptr -4
-var_2		= byte ptr -2
+@@bar_color		= word ptr -0Ah
 
 		push	bp
 		mov	bp, sp
 		sub	sp, 0Ah
-		mov	ax, word_22721
-		mov	[bp+var_A], ax
-		mov	ax, word_22723
-		mov	[bp+var_8], ax
-		mov	ax, word_22725
-		mov	[bp+var_6], ax
-		mov	ax, word_22727
-		mov	[bp+var_4], ax
-		mov	al, byte_22729
-		mov	[bp+var_2], al
-		cmp	byte_22720, 7Fh
+		mov	ax, word ptr HUD_BAR_DREAM_COLORS+0
+		mov	word ptr [bp+@@bar_color+0], ax
+		mov	ax, word ptr HUD_BAR_DREAM_COLORS+2
+		mov	word ptr [bp+@@bar_color+2], ax
+		mov	ax, word ptr HUD_BAR_DREAM_COLORS+4
+		mov	word ptr [bp+@@bar_color+4], ax
+		mov	ax, word ptr HUD_BAR_DREAM_COLORS+6
+		mov	word ptr [bp+@@bar_color+6], ax
+		mov	al, byte ptr HUD_BAR_DREAM_COLORS+8
+		mov	byte ptr [bp+@@bar_color+8], al
+		cmp	prev_dream, 127
 		ja	short loc_105E6
 		cmp	_dream, 128
 		jb	short loc_105E6
@@ -7885,7 +7881,7 @@ var_2		= byte ptr -2
 
 loc_105E6:
 		mov	al, _dream
-		mov	byte_22720, al
+		mov	prev_dream, al
 		push	14h
 		mov	ah, 0
 		push	ax
@@ -7932,7 +7928,7 @@ var_A		= byte ptr -0Ah
 		sub	sp, 0Ah
 		push	si
 		push	di
-		mov	si, 1D4Ah
+		mov	si, offset HUD_BAR_POWER_COLORS
 		lea	di, [bp+var_A]
 		push	ss
 		pop	es
@@ -7962,39 +7958,35 @@ hud_power_put	endp
 
 ; Attributes: bp-based frame
 
-sub_1065B	proc far
+hud_boss_hp_put	proc far
 
-var_10		= word ptr -10h
-var_E		= word ptr -0Eh
-var_C		= byte ptr -0Ch
-var_A		= word ptr -0Ah
-var_8		= word ptr -8
-var_6		= word ptr -6
-var_4		= word ptr -4
-var_2		= byte ptr -2
-arg_0		= word ptr  6
+@@bar_color		= word ptr -10h
+@@buf		= word ptr -0Ah
+
+@@boss_hp		= word ptr  6
 
 		push	bp
 		mov	bp, sp
 		sub	sp, 10h
 		push	si
-		mov	si, [bp+arg_0]
-		mov	ax, word_22734
-		mov	[bp+var_A], ax
-		mov	ax, word_22736
-		mov	[bp+var_8], ax
-		mov	ax, word_22738
-		mov	[bp+var_6], ax
-		mov	ax, word_2273A
-		mov	[bp+var_4], ax
-		mov	al, byte_2273C
-		mov	[bp+var_2], al
-		mov	ax, word_2273D
-		mov	[bp+var_10], ax
-		mov	ax, word_2273F
-		mov	[bp+var_E], ax
-		mov	al, byte_22741
-		mov	[bp+var_C], al
+		mov	si, [bp+@@boss_hp]
+		mov	ax, word ptr gblank_line+0
+		mov	word ptr [bp+@@buf], ax
+		mov	ax, word ptr gblank_line+2
+		mov	word ptr [bp+@@buf+2], ax
+		mov	ax, word ptr gblank_line+4
+		mov	word ptr [bp+@@buf+4], ax
+		mov	ax, word ptr gblank_line+6
+		mov	word ptr [bp+@@buf+6], ax
+		mov	al, byte ptr gblank_line+8
+		mov	byte ptr [bp+@@buf+8], al
+		
+		mov	ax, word ptr HUD_BAR_BOSS_HP_COLORS
+		mov	word ptr [bp+@@bar_color+0], ax
+		mov	ax, word ptr HUD_BAR_BOSS_HP_COLORS+2
+		mov	word ptr [bp+@@bar_color+2], ax
+		mov	al, byte ptr HUD_BAR_BOSS_HP_COLORS+4
+		mov	byte ptr [bp+@@bar_color+4], al
 		or	si, si
 		jz	short loc_106C8
 		call	gaiji_putsa pascal, (61 shl 16) + 8, ds, offset gsENEMY, TX_YELLOW
@@ -8004,7 +7996,7 @@ arg_0		= word ptr  6
 		mov	bx, 20h	; ' '
 		cwd
 		idiv	bx
-		lea	dx, [bp+var_10]
+		lea	dx, [bp+@@bar_color]
 		add	ax, dx
 		mov	bx, ax
 		mov	al, ss:[bx]
@@ -8032,7 +8024,7 @@ loc_106EE:
 		pop	si
 		leave
 		retf	2
-sub_1065B	endp
+hud_boss_hp_put	endp
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -8118,7 +8110,7 @@ loc_1082D:
 		push	ax
 		call	gaiji_putsa
 		push	0
-		call	sub_1065B
+		call	hud_boss_hp_put
 		pop	bp
 		retf
 
@@ -14634,7 +14626,7 @@ loc_17393:
 
 loc_1739D:
 		push	word_2268C
-		call	sub_1065B
+		call	hud_boss_hp_put
 		pop	di
 		pop	si
 		pop	bp
@@ -29159,21 +29151,9 @@ byte_226C2	db 0
 		db 0
 include th04/score[data].asm
 include th04/strings/hud[data].asm
-byte_22720	db 0
-word_22721	dw 4141h
-word_22723	dw 6161h
-word_22725	dw 8121h
-word_22727	dw 0C1A1h
-byte_22729	db 0E1h
-include th04/main/hud/bar_colors[data].asm
-word_22734	dw 202h
-word_22736	dw 202h
-word_22738	dw 202h
-word_2273A	dw 202h
-byte_2273C	db 0
-word_2273D	dw 6141h
-word_2273F	dw 0C1A1h
-byte_22741	db 0E1h
+include th05/main/hud/bar_dream[data].asm
+include th04/main/hud/bar_power[data].asm
+include th04/main/hud/bar_boss_hp[data].asm
 aB@b@bB@b@	db '　　×　　',0
 aB@b@bB@b@_0	db '　　×　　',0
 off_22758	dw offset sub_1823B

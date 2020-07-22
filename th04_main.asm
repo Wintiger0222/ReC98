@@ -6834,7 +6834,7 @@ var_A		= byte ptr -0Ah
 		sub	sp, 0Ah
 		push	si
 		push	di
-		mov	si, 1ABDh
+		mov	si, offset HUD_BAR_POWER_COLORS
 		lea	di, [bp+var_A]
 		push	ss
 		pop	es
@@ -6864,39 +6864,35 @@ hud_power_put	endp
 
 ; Attributes: bp-based frame
 
-sub_F0DD	proc far
+hud_boss_hp_put	proc far
 
-var_10		= word ptr -10h
-var_E		= word ptr -0Eh
-var_C		= byte ptr -0Ch
-var_A		= word ptr -0Ah
-var_8		= word ptr -8
-var_6		= word ptr -6
-var_4		= word ptr -4
-var_2		= byte ptr -2
-arg_0		= word ptr  6
+@@bar_color		= word ptr -10h
+@@buf		= word ptr -0Ah
+
+@@boss_hp		= word ptr  6
 
 		push	bp
 		mov	bp, sp
 		sub	sp, 10h
 		push	si
-		mov	si, [bp+arg_0]
-		mov	ax, word_22E07
-		mov	[bp+var_A], ax
-		mov	ax, word_22E09
-		mov	[bp+var_8], ax
-		mov	ax, word_22E0B
-		mov	[bp+var_6], ax
-		mov	ax, word_22E0D
-		mov	[bp+var_4], ax
-		mov	al, byte_22E0F
-		mov	[bp+var_2], al
-		mov	ax, word_22E10
-		mov	[bp+var_10], ax
-		mov	ax, word_22E12
-		mov	[bp+var_E], ax
-		mov	al, byte_22E14
-		mov	[bp+var_C], al
+		mov	si, [bp+@@boss_hp]
+		mov	ax, word ptr gblank_line+0
+		mov	word ptr [bp+@@buf], ax
+		mov	ax, word ptr gblank_line+2
+		mov	word ptr [bp+@@buf+2], ax
+		mov	ax, word ptr gblank_line+4
+		mov	word ptr [bp+@@buf+4], ax
+		mov	ax, word ptr gblank_line+6
+		mov	word ptr [bp+@@buf+6], ax
+		mov	al, byte ptr gblank_line+8
+		mov	byte ptr [bp+@@buf+8], al
+		
+		mov	ax, word ptr HUD_BAR_BOSS_HP_COLORS
+		mov	word ptr [bp+@@bar_color+0], ax
+		mov	ax, word ptr HUD_BAR_BOSS_HP_COLORS+2
+		mov	word ptr [bp+@@bar_color+2], ax
+		mov	al, byte ptr HUD_BAR_BOSS_HP_COLORS+4
+		mov	byte ptr [bp+@@bar_color+4], al
 		or	si, si
 		jz	short loc_F14C
 		call	gaiji_putsa pascal, (61 shl 16) + 8, ds, offset gsENEMY, TX_YELLOW
@@ -6906,7 +6902,7 @@ arg_0		= word ptr  6
 		mov	bx, 20h	; ' '
 		cwd
 		idiv	bx
-		lea	dx, [bp+var_10]
+		lea	dx, [bp+@@bar_color]
 		add	ax, dx
 		mov	bx, ax
 		mov	al, ss:[bx]
@@ -6925,7 +6921,7 @@ loc_F14C:
 		call	gaiji_putsa
 		push	(56 shl 16) + 9
 		push	ss
-		lea	ax, [bp+var_A]
+		lea	ax, [bp+@@buf]
 		push	ax
 		push	TX_WHITE
 		call	gaiji_putsa
@@ -6934,7 +6930,7 @@ loc_F172:
 		pop	si
 		leave
 		retf	2
-sub_F0DD	endp
+hud_boss_hp_put	endp
 
 include th04/main/hud/bar_put.asm
 
@@ -7042,7 +7038,7 @@ loc_F32E:
 		push	ax
 		call	gaiji_putsa
 		push	0
-		call	main_01:sub_F0DD
+		call	main_01:hud_boss_hp_put
 		pop	bp
 		retf
 hud_put	endp
@@ -24111,7 +24107,7 @@ loc_19F55:
 
 loc_19F5F:
 		push	word_23210
-		call	sub_F0DD
+		call	hud_boss_hp_put
 		pop	di
 		pop	si
 		pop	bp
@@ -35859,15 +35855,8 @@ unk_22D9E	db 0DCh
 		db    1
 include th04/score[data].asm
 include th04/strings/hud[data].asm
-include th04/main/hud/bar_colors[data].asm
-word_22E07	dw 202h
-word_22E09	dw 202h
-word_22E0B	dw 202h
-word_22E0D	dw 202h
-byte_22E0F	db 0
-word_22E10	dw 6141h
-word_22E12	dw 0C1A1h
-byte_22E14	db 0E1h
+include th04/main/hud/bar_power[data].asm
+include th04/main/hud/bar_boss_hp[data].asm
 include th04/main/hud/bar_put[data].asm
 aB@b@bB@b@	db '　　×　　',0
 aB@b@bB@b@_0	db '　　×　　',0
