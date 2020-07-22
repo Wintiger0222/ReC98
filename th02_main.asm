@@ -6789,16 +6789,11 @@ public HUD_POWER_PUT
 hud_power_put	proc near
 
 var_18		= word ptr -18h
-var_16		= word ptr -16h
-var_14		= word ptr -14h
+
 var_12		= word ptr -12h
-var_10		= word ptr -10h
-var_E		= word ptr -0Eh
-var_C		= word ptr -0Ch
-var_A		= byte ptr -0Ah
+
 var_8		= word ptr -8
-var_6		= word ptr -6
-var_4		= word ptr -4
+
 var_2		= word ptr -2
 
 		push	bp
@@ -6806,28 +6801,28 @@ var_2		= word ptr -2
 		sub	sp, 18h
 		push	si
 		xor	si, si
-		mov	ax, word_1E5D8
-		mov	[bp+var_8], ax
-		mov	ax, word_1E5DA
-		mov	[bp+var_6], ax
-		mov	ax, word_1E5DC
-		mov	[bp+var_4], ax
-		mov	ax, word_1E5DE
-		mov	[bp+var_12], ax
-		mov	ax, word_1E5E0
-		mov	[bp+var_10], ax
-		mov	ax, word_1E5E2
-		mov	[bp+var_E], ax
-		mov	ax, word_1E5E4
-		mov	[bp+var_C], ax
-		mov	al, byte_1E5E6
-		mov	[bp+var_A], al
-		mov	ax, word_1E5E7
-		mov	[bp+var_18], ax
-		mov	ax, word_1E5E9
-		mov	[bp+var_16], ax
-		mov	ax, word_1E5EB
-		mov	[bp+var_14], ax
+		mov	ax, word ptr hud_bar_max
+		mov	word ptr [bp+var_8], ax
+		mov	ax, word ptr hud_bar_max+2
+		mov	word ptr [bp+var_8+2], ax
+		mov	ax, word ptr hud_bar_max+4
+		mov	word ptr [bp+var_8+4], ax
+		mov	ax, word ptr HUD_BAR_POWER_COLORS
+		mov	word ptr [bp+var_12], ax
+		mov	ax, word ptr HUD_BAR_POWER_COLORS+2
+		mov	word ptr [bp+var_12+2], ax
+		mov	ax, word ptr HUD_BAR_POWER_COLORS+4
+		mov	word ptr [bp+var_12+4], ax
+		mov	ax, word ptr HUD_BAR_POWER_COLORS+6
+		mov	word ptr [bp+var_12+6], ax
+		mov	al, byte ptr HUD_BAR_POWER_COLORS+8
+		mov	byte ptr [bp+var_12+8], al
+		mov	ax, word ptr HUD_bar_ROW
+		mov	word ptr [bp+var_18], ax
+		mov	ax, word ptr HUD_bar_ROW+2
+		mov	word ptr [bp+var_18+2], ax
+		mov	ax, word ptr HUD_bar_ROW+4
+		mov	word ptr [bp+var_18+4], ax
 		mov	al, power
 		mov	ah, 0
 		sar	ax, 2
@@ -29184,7 +29179,7 @@ marisa_init	proc far
 		mov	super_patnum, 80h
 		call	super_entry_bfnt pascal, ds, offset aStage3_b_bft ; "stage3_b.bft"
 		call	super_entry_bfnt pascal, ds, offset aStage3_b_btt_0 ; "stage3_b.btt"
-		mov	word_20652, 0B0h ; 'ÔøΩ'
+		mov	word_20652, 0B0h ; 'ÅEΩ'
 		mov	ax, word_20652
 		mov	word_20654, ax
 		mov	word_20656, 40h
@@ -33823,23 +33818,9 @@ bombs	db 3
 word_1E5B6	dw 0
 dword_1E5B8	dd 9C40h
 include th02/main/hud/score_put[data].asm
-word_1E5D8	dw 4140h
-word_1E5DA	dw 4342h
-word_1E5DC	dw 44h
-word_1E5DE	dw 4141h
-word_1E5E0	dw 6141h
-word_1E5E2	dw 2161h
-word_1E5E4	dw 0A181h
-byte_1E5E6	db 0C1h
-word_1E5E7	dw 0CFCFh
-word_1E5E9	dw 0CFCFh
-word_1E5EB	dw 0CFh
-include th02/strings/ranks_left[data].asm
-gsSCORE		db 0C4h, 0C5h, 0C6h, 0,	0
-gsHISCORE	db 0CEh, 0C4h, 0C5h, 0C6h, 0
-gsREIMU		db 0C9h, 0CAh, 0, 0, 0
-gsREIGEKI	db 0CCh, 0CDh, 0, 0, 0
-gsREIRYOKU	db 0C7h, 0C8h, 0, 0, 0
+include th02/main/hud/bar_power[data].asm
+; include th02/strings/ranks_left[data].asm
+include th02/strings/hud[data].asm
 aMikoft_bft	db 'MIKOFT.bft',0
 ; Indexed with (power / 4).
 SHOT_LEVELS	db 0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 8, 9
